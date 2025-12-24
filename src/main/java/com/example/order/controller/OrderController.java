@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.order.DTO.OrderRequestDTO;
 import com.example.order.model.Order;
 import com.example.order.service.OrderService;
+import com.example.order.service.ResponseDTO;
 
 import reactor.core.publisher.Mono;
 
@@ -28,13 +30,12 @@ public class OrderController {
 	}
 	
 	@PostMapping("/createOrder")
-	public Mono<Map<String,Object>> createOrder(@RequestBody String userId){
-
-	Long recprdUpdated	=orderService.createOrder(userId);
+	public Mono<Map<String,Object>> createOrder(@RequestBody OrderRequestDTO orderRequestDTO){
+	ResponseDTO responseDTO	=orderService.createOrder(orderRequestDTO);
 		Map<String,Object> responseMap =new HashMap<>();
-		responseMap.put("orderId","1");
+		responseMap.put("orderId",responseDTO.getUserorderUuid());
 		responseMap.put("orderStatus","creatd");
-		responseMap.put("recordupdated", recprdUpdated);
+		responseMap.put("recordupdated", "1");
 		return Mono.just(responseMap);  
 	}
 	
